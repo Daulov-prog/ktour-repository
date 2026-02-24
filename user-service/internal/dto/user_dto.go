@@ -15,3 +15,8 @@ type UserResponse struct {
 	Email     string
 	CreatedAt time.Time
 }
+
+type LoginRequest struct {
+	Email    string
+	Password string
+}

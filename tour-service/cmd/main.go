@@ -23,7 +23,7 @@ func main() {
 	tourHandler := handler.NewTourHandler(tourService)
 
 	r := chi.NewRouter()
-	r.Post("/register", tourHandler.HandleRegister)
+	r.Post("/tours", tourHandler.HandleRegister)
 	r.Get("/tours/{id}", tourHandler.HandleGetTour)
 	r.Get("/tours", tourHandler.HandleGetAllTours)
 	r.Delete("/tours/{id}", tourHandler.HandleDeleteTour)

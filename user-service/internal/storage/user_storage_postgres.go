@@ -53,6 +53,20 @@ func (u *UserPostgresStorage) GetAllUsers() (map[string]models.User, error) {
 
 }
 
+func (u *UserPostgresStorage) GetUserByEmail(email string) (*models.User, error) {
+	row := u.db.QueryRow("SELECT id, full_name, age, email, password, created_at FROM users WHERE email = $1", email)
+
+	user := &models.User{}
+
+	err := row.Scan(&user.ID, &user.FullName, &user.Age, &user.Email, &user.Password, &user.CreatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (u *UserPostgresStorage) UpdateUser(id string, email string, password string) error {
 	_, err := u.db.Exec(
 		"UPDATE users SET email = $1, password = $2 WHERE id = $3", email, password, id,

@@ -14,7 +14,16 @@ CREATE TABLE tours (
     description TEXT NOT NULL,
     max_slots INT NOT NULL,
     days INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     type VARCHAR(255) NOT NULL,
     in_stock BOOLEAN NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
+
+CREATE TABLE bookings (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id VARCHAR(36) NOT NULL,
+    tour_id VARCHAR(36) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);  

@@ -9,9 +9,9 @@ type TourService struct {
 	storage storage.TourStorageInterface
 }
 
-func NewTourService(storage storage.TourStorageInterface) *TourService {
+func NewTourService(storage *storage.TourStorageInterface) *TourService {
 	return &TourService{
-		storage: storage,
+		storage: *storage,
 	}
 }
 

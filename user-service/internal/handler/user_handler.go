@@ -10,12 +10,14 @@ import (
 )
 
 type UserHandler struct {
-	service *service.UserService
+	service     *service.UserService
+	authService *service.AuthService
 }
 
-func NewUserHandler(service *service.UserService) *UserHandler {
+func NewUserHandler(service *service.UserService, authService *service.AuthService) *UserHandler {
 	return &UserHandler{
-		service: service,
+		service:     service,
+		authService: authService,
 	}
 }
 
@@ -69,6 +71,19 @@ func (h *UserHandler) HandleGetAllUsers(w http.ResponseWriter, r *http.Request) 
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(users)
+}
+
+func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
+	var req dto.LoginRequest
+	json.NewDecoder(r.Body).Decode(&req)
+
+	token, err := h.authService.Login(req.Email, req.Password)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }
 
 func (h *UserHandler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {

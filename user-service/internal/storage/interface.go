@@ -8,4 +8,5 @@ type UserStorageInterface interface {
 	GetAllUsers() (map[string]models.User, error)
 	UpdateUser(id string, email string, password string) error
 	DeleteUser(id string) error
+	GetUserByEmail(email string) (*models.User, error)
 }
