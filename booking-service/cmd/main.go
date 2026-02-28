@@ -2,6 +2,7 @@ package main
 
 import (
 	"booking-service/internal/db"
+	"booking-service/internal/grpc"
 	"booking-service/internal/handler"
 	"booking-service/internal/service"
 	"booking-service/internal/storage"
@@ -18,8 +19,13 @@ func main() {
 		log.Fatal("Не удалось подключиться к базе:", err)
 	}
 
+	userClient, err := grpc.NewUserClient("localhost:50051")
+	if err != nil {
+		log.Fatal("Не удалось подключтьбся к user-service:", err)
+	}
+
 	bookingStorage := storage.NewBookingStorage(dataBase)
-	bookingService := service.NewBookingService(bookingStorage)
+	bookingService := service.NewBookingService(bookingStorage, userClient)
 	bookingHanlder := handler.NewTourHandler(bookingService)
 
 	r := chi.NewRouter()
